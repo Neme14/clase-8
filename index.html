@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizarra Digital - Colegio Montano</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        montano: {
+                            blue: '#1269A8',
+                            yellow: '#F7D615',
+                            green: '#54887D',
+                            lightBlue: '#88B5C7',
+                            olive: '#A6B046',
+                            bg: '#F2F5E9'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #F2F5E9;
+        }
+        .tab-btn.active {
+            background-color: #1269A8;
+            color: white;
+            border-bottom: 4px solid #F7D615;
+            font-weight: bold;
+        }
+        .accordion-content {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .accordion-content.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-gray-800">
+
+    <header class="bg-montano-blue text-white shadow-md p-4 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-4">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyEop0yf6lZ7Jk9MILZxF1rBj4Oqs5esyhIQ&s" 
+                     alt="Colegio Montano" 
+                     class="h-14 bg-white p-1 rounded-lg shadow-sm onerror-fallback"
+                     onerror="this.src='https://placehold.co/100x50/1269A8/FFFFFF?text=MONTANO'">
+                <div>
+                    <h1 class="text-xl font-bold tracking-wide text-montano-yellow">COLEGIO MONTANO</h1>
+                    <p class="text-xs text-montano-lightBlue font-medium">Pizarra Digital Interactiva • Plan Diario de Clase</p>
+                </div>
+            </div>
+
+            <!-- Header Info -->
+            <div class="flex items-center gap-3 text-xs bg-black/20 p-2.5 rounded-xl border border-white/10">
+                <div>
+                    <p><span class="font-bold text-montano-yellow">Curso:</span> Formación Musical</p>
+                    <p><span class="font-bold text-montano-yellow">Grado:</span> Primero Primaria</p>
+                </div>
+                <div class="border-l border-white/20 pl-3">
+                    <p><span class="font-bold text-montano-yellow">Docente:</span> Nemecio Cutzán</p>
+                    <p><span class="font-bold text-montano-yellow">Fecha:</span> Febrero 2027 (Unidad 1)</p>
+                </div>
+            </div>
+
+            <!-- Fullscreen Toggle -->
+            <button onclick="toggleFullscreen()" class="bg-montano-yellow text-montano-blue hover:bg-yellow-300 px-4 py-2 rounded-lg font-bold shadow-md flex items-center transition duration-200">
+                <i class="fas font-icon fa-expand mr-2" id="fs-icon"></i>
+                <span id="fs-text">Pantalla Completa</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 flex flex-col gap-6">
+
+        <!-- Pedagogical Context Card -->
+        <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div class="bg-montano-bg p-3.5 rounded-xl border border-montano-olive/30">
+                    <h3 class="font-bold text-montano-blue flex items-center mb-1">
+                        <i class="fas fa-bullseye mr-2 text-montano-olive"></i>Competencia CNB & Logro
+                    </h3>
+                    <p class="text-xs text-gray-700"><strong>Competencia:</strong> Ejecuta patrones rítmicos y melódicos sencillos con instrumentos o voz.</p>
+                    <p class="text-xs text-gray-700 mt-1"><strong>Logro:</strong> Interpreta con precisión las primeras dos frases del vals "El Danubio Azul".</p>
+                </div>
+
+                <div class="bg-montano-bg p-3.5 rounded-xl border border-montano-olive/30">
+                    <h3 class="font-bold text-montano-blue flex items-center mb-1">
+                        <i class="fas fa-brain mr-2 text-montano-olive"></i>Competencias Clave & Hábitos
+                    </h3>
+                    <p class="text-xs text-gray-700"><strong>Clave:</strong> Escucha activa, coordinación motora y disciplina.</p>
+                    <p class="text-xs text-gray-700 mt-1"><strong>Hábitos Montano:</strong> <span class="bg-montano-yellow/30 px-1.5 py-0.5 rounded font-semibold text-montano-blue">Comenzar con un fin en mente</span> y <span class="bg-montano-yellow/30 px-1.5 py-0.5 rounded font-semibold text-montano-blue">Sinergizar</span>.</p>
+                </div>
+
+                <div class="bg-montano-bg p-3.5 rounded-xl border border-montano-olive/30">
+                    <h3 class="font-bold text-montano-blue flex items-center mb-1">
+                        <i class="fas fa-cubes mr-2 text-montano-olive"></i>Recursos & Evaluación
+                    </h3>
+                    <p class="text-xs text-gray-700"><strong>Recursos:</strong> Xilófonos / Metalófonos / Teclados, Pizarra digital, Guía gráfica de notas.</p>
+                    <p class="text-xs text-gray-700 mt-1"><strong>Momentos Evaluación:</strong> Diagnóstica (Eco rítmico), Formativa (Guía individual), Sumativa (Lista de cotejo plenaria).</p>
+                </div>
+            </div>
+        </section>
+
+        <nav class="flex flex-wrap gap-2 bg-white p-2 rounded-2xl shadow-sm border border-gray-200">
+            <button onclick="switchTab('tab1')" id="btn-tab1" class="tab-btn active flex-1 py-3 px-4 rounded-xl text-sm font-semibold transition flex items-center justify-center gap-2">
+                <i class="fas fa-play-circle"></i>
+                <span>I) Introducción Motivante</span>
+                <span class="text-xs opacity-75">(5 min)</span>
+            </button>
+            <button onclick="switchTab('tab2')" id="btn-tab2" class="tab-btn flex-1 py-3 px-4 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100 transition flex items-center justify-center gap-2">
+                <i class="fas fa-user-music"></i>
+                <span>II) Trabajo Individual</span>
+                <span class="text-xs opacity-75">(20 min)</span>
+            </button>
+            <button onclick="switchTab('tab3')" id="btn-tab3" class="tab-btn flex-1 py-3 px-4 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100 transition flex items-center justify-center gap-2">
+                <i class="fas fa-users"></i>
+                <span>III) Trabajo Cooperativo</span>
+                <span class="text-xs opacity-75">(30 min)</span>
+            </button>
+            <button onclick="switchTab('tab4')" id="btn-tab4" class="tab-btn flex-1 py-3 px-4 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100 transition flex items-center justify-center gap-2">
+                <i class="fas fa-star"></i>
+                <span>IV) Plenaria y Juego</span>
+                <span class="text-xs opacity-75">(15 min)</span>
+            </button>
+        </nav>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex-grow">
+
+            <!-- PESTAÑA 1 -->
+            <div id="tab1" class="tab-content block space-y-6">
+                <div class="border-l-4 border-montano-blue pl-4">
+                    <h2 class="text-xl font-bold text-montano-blue">Pestaña I: Introducción Motivante (~5 minutos)</h2>
+                    <p class="text-sm text-gray-600">Activación de conocimientos previos y sensibilización auditiva.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-montano-bg p-5 rounded-xl border border-montano-lightBlue/40 flex flex-col justify-between">
+                        <div>
+                            <span class="bg-montano-blue text-white text-xs font-bold px-2.5 py-1 rounded-full uppercase">Recreo Cerebral / Juego</span>
+                            <h3 class="font-bold text-lg text-montano-blue mt-2">"El Director de Orquesta de las Olas"</h3>
+                            <p class="text-sm text-gray-700 mt-2">
+                                Los niños imaginan que están frente al río Danubio. Con una varita (o el dedo), van a dirigir el viento y el agua:
+                            </p>
+                            <ul class="list-disc list-inside text-sm text-gray-700 mt-2 space-y-1">
+                                <li>Mano arriba: inhalamos suavemente.</li>
+                                <li>Mano abajo: imitamos el sonido del agua cantando <i>"Shhh... Do - Mi - Sol"</i>.</li>
+                                <li>Aceleramos y desaceleramos el pulso para calentar la voz y el ritmo.</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-200 text-xs font-semibold text-montano-green">
+                            <i class="fas fa-smile mr-1"></i> Hábitos Montano: "Comenzar con un fin en mente" (Preparar nuestro cuerpo y mente).
+                        </div>
+                    </div>
+
+                    <div class="bg-montano-bg p-5 rounded-xl border border-montano-lightBlue/40 flex flex-col justify-between">
+                        <div>
+                            <span class="bg-montano-yellow text-montano-blue text-xs font-bold px-2.5 py-1 rounded-full uppercase">Pregunta Exploratoria</span>
+                            <h3 class="font-bold text-lg text-montano-blue mt-2">¿Cómo suena un vals elegante?</h3>
+                            <p class="text-sm text-gray-700 mt-2">
+                                El maestro ejecuta las primeras tres notas en el instrumento y pregunta:
+                            </p>
+                            <blockquote class="italic text-sm text-gray-600 bg-white p-3 rounded-lg border-l-2 border-montano-yellow my-2">
+                                "¿Escuchan cómo las notas van subiendo como una escalerita mágica?"
+                            </blockquote>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-200 text-xs font-semibold text-montano-green">
+                            <i class="fas fa-music mr-1"></i> Objetivo: Identificar la dirección ascendente del sonido (Do - Mi - Sol).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 2 -->
+            <div id="tab2" class="tab-content hidden space-y-6">
+                <div class="border-l-4 border-montano-blue pl-4">
+                    <h2 class="text-xl font-bold text-montano-blue">Pestaña II: Trabajo Individual (20 minutos)</h2>
+                    <p class="text-sm text-gray-600">Práctica personal de digitación, postura y lectura de notas con color.</p>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl text-sm text-blue-900 flex items-start gap-3">
+                    <i class="fas fa-info-circle text-lg text-montano-blue mt-0.5"></i>
+                    <div>
+                        <strong>Instrucción para el estudiante:</strong> Observa la guía visual del mapa de notas en tu instrumento. Ensaya primero cantando las notas y luego tocándolas con tu mano dominante.
+                    </div>
+                </div>
+
+                <!-- Interactive Accordion for Phrase Solutions -->
+                <div class="space-y-4">
+                    <h3 class="font-bold text-gray-700">Guías de Digitaciones y Notas Secreta (Toca para revelar u ocultar la solución):</h3>
+
+                    <!-- Accordion Item 1 -->
+                    <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('acc1')" class="w-full bg-montano-bg hover:bg-gray-100 p-4 text-left font-bold text-montano-blue flex justify-between items-center">
+                            <span><i class="fas fa-music mr-2 text-montano-yellow"></i>Frase 1: La Escalera del Danubio</span>
+                            <i id="acc1-icon" class="fas fa-chevron-down text-gray-500"></i>
+                        </button>
+                        <div id="acc1" class="accordion-content bg-white p-4 border-t border-gray-100">
+                            <p class="text-sm font-semibold text-gray-700 mb-2">Notas de la Frase 1:</p>
+                            <div class="flex flex-wrap gap-2 text-center text-sm font-bold">
+                                <span class="bg-red-100 text-red-700 border border-red-300 px-3 py-1.5 rounded-lg">DO</span>
+                                <span class="bg-yellow-100 text-yellow-800 border border-yellow-300 px-3 py-1.5 rounded-lg">MI</span>
+                                <span class="bg-blue-100 text-blue-800 border border-blue-300 px-3 py-1.5 rounded-lg">SOL</span>
+                                <span class="bg-blue-200 text-blue-900 border border-blue-400 px-3 py-1.5 rounded-lg">SOL (alto)</span>
+                                <span class="bg-yellow-100 text-yellow-800 border border-yellow-300 px-3 py-1.5 rounded-lg">MI</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-3">💡 <i>Tip de digitación: Usa suavemente tu baqueta o dedo índice. ¡Mantén el ritmo suave de 1, 2, 3!</i></p>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Item 2 -->
+                    <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                        <button onclick="toggleAccordion('acc2')" class="w-full bg-montano-bg hover:bg-gray-100 p-4 text-left font-bold text-montano-blue flex justify-between items-center">
+                            <span><i class="fas fa-music mr-2 text-montano-yellow"></i>Frase 2: El Reposo en las Olas</span>
+                            <i id="acc2-icon" class="fas fa-chevron-down text-gray-500"></i>
+                        </button>
+                        <div id="acc2" class="accordion-content bg-white p-4 border-t border-gray-100">
+                            <p class="text-sm font-semibold text-gray-700 mb-2">Notas de la Frase 2:</p>
+                            <div class="flex flex-wrap gap-2 text-center text-sm font-bold">
+                                <span class="bg-yellow-100 text-yellow-800 border border-yellow-300 px-3 py-1.5 rounded-lg">MI</span>
+                                <span class="bg-yellow-100 text-yellow-800 border border-yellow-300 px-3 py-1.5 rounded-lg">MI</span>
+                                <span class="bg-green-100 text-green-800 border border-green-300 px-3 py-1.5 rounded-lg">RE</span>
+                                <span class="bg-gray-100 text-gray-800 border border-gray-300 px-3 py-1.5 rounded-lg">(Silencio breve)</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-3">💡 <i>Tip de digitación: No golpees fuerte, deja que el sonido flote como un barco de papel.</i></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 3 -->
+            <div id="tab3" class="tab-content hidden space-y-6">
+                <div class="border-l-4 border-montano-blue pl-4">
+                    <h2 class="text-xl font-bold text-montano-blue">Pestaña III: Trabajo Cooperativo en Parejas (30 minutos)</h2>
+                    <p class="text-sm text-gray-600">Ensamble en parejas aplicando el hábito <i>"Sinergizar"</i>.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-montano-bg p-5 rounded-xl border border-montano-olive/30">
+                        <h3 class="font-bold text-montano-blue text-lg mb-3 flex items-center">
+                            <i class="fas fa-users-cog mr-2 text-montano-olive"></i>Asignación de Roles en Pareja
+                        </h3>
+                        <div class="space-y-3">
+                            <div class="bg-white p-3 rounded-lg border border-gray-200">
+                                <span class="text-xs font-bold bg-montano-blue text-white px-2 py-0.5 rounded">Rol A: El Músico Principal</span>
+                                <p class="text-xs text-gray-700 mt-1">Interpreta la Frase 1 utilizando su instrumento cuidando la postura.</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg border border-gray-200">
+                                <span class="text-xs font-bold bg-montano-yellow text-montano-blue px-2 py-0.5 rounded">Rol B: El Eco / Guardián del Ritmo</span>
+                                <p class="text-xs text-gray-700 mt-1">Responde interpretando la Frase 2 y verifica que su compañero cuente "1, 2, 3".</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-montano-bg p-5 rounded-xl border border-montano-olive/30">
+                        <h3 class="font-bold text-montano-blue text-lg mb-3 flex items-center">
+                            <i class="fas fa-tasks mr-2 text-montano-olive"></i>Reto del Ensamble
+                        </h3>
+                        <ol class="list-decimal list-inside text-sm text-gray-700 space-y-2">
+                            <li>Contar juntos: <i>"Un, dos, tres... ¡Listos ya!"</i></li>
+                            <li>Tocar la Frase 1 y 2 de forma continua sin detenerse.</li>
+                            <li>Cambiar de roles para que ambos ensayen las dos frases.</li>
+                        </ol>
+                        <div class="mt-4 p-3 bg-montano-yellow/20 rounded-lg text-xs font-semibold text-montano-blue border border-montano-yellow/50">
+                            🌟 <strong>Hábito Montano:</strong> "Pensar Ganar-Ganar" — Ayudo a mi compañero si se equivoca en una nota para que los dos logremos la melodía.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 4 -->
+            <div id="tab4" class="tab-content hidden space-y-6">
+                <div class="border-l-4 border-montano-blue pl-4">
+                    <h2 class="text-xl font-bold text-montano-blue">Pestaña IV: Plenaria y Juego Interactivo (15 minutos)</h2>
+                    <p class="text-sm text-gray-600">Presentación grupal y evaluación interactiva de las dos frases aprendidas.</p>
+                </div>
+
+                <!-- Interactive Musical Game -->
+                <div class="bg-gradient-to-r from-montano-blue to-montano-lightBlue text-white p-6 rounded-2xl shadow-md">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg text-montano-yellow"><i class="fas fa-gamepad mr-2"></i>Juego Interactivo: "Simulador de Melodías"</h3>
+                        <span class="text-xs bg-white/20 px-3 py-1 rounded-full">Proyección interactiva</span>
+                    </div>
+                    <p class="text-xs text-white/90 mb-4">Haz clic en los botones para escuchar y verificar en la pizarra el patrón rítmico correcto de las frases antes del cierre:</p>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button onclick="playNoteSound('Do')" class="bg-white/10 hover:bg-white/20 border border-white/20 p-3 rounded-xl text-center transition active:scale-95">
+                            <div class="text-2xl font-bold text-montano-yellow">DO</div>
+                            <div class="text-xs text-white/80">Nota Base</div>
+                        </button>
+                        <button onclick="playNoteSound('Mi')" class="bg-white/10 hover:bg-white/20 border border-white/20 p-3 rounded-xl text-center transition active:scale-95">
+                            <div class="text-2xl font-bold text-montano-yellow">MI</div>
+                            <div class="text-xs text-white/80">Nota Media</div>
+                        </button>
+                        <button onclick="playNoteSound('Sol')" class="bg-white/10 hover:bg-white/20 border border-white/20 p-3 rounded-xl text-center transition active:scale-95">
+                            <div class="text-2xl font-bold text-montano-yellow">SOL</div>
+                            <div class="text-xs text-white/80">Nota Alta</div>
+                        </button>
+                        <button onclick="playNoteSound('Re')" class="bg-white/10 hover:bg-white/20 border border-white/20 p-3 rounded-xl text-center transition active:scale-95">
+                            <div class="text-2xl font-bold text-montano-yellow">RE</div>
+                            <div class="text-xs text-white/80">Cierre</div>
+                        </button>
+                    </div>
+                    <div id="note-feedback" class="mt-4 text-center text-sm font-semibold text-montano-yellow h-6"></div>
+                </div>
+
+                <!-- Instrumento de Evaluación: Lista de Cotejo -->
+                <div class="border border-gray-200 rounded-2xl p-5 bg-montano-bg">
+                    <h3 class="font-bold text-montano-blue text-lg mb-3 flex items-center">
+                        <i class="fas fa-clipboard-check mr-2 text-montano-olive"></i>Lista de Cotejo para Evaluación en Plenaria
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-gray-700 bg-white rounded-xl overflow-hidden shadow-sm">
+                            <thead class="bg-montano-blue text-white uppercase font-bold">
+                                <tr>
+                                    <th class="p-3">Criterio de Evaluación</th>
+                                    <th class="p-3 text-center">Logrado (2 pts)</th>
+                                    <th class="p-3 text-center">En Proceso (1 pt)</th>
+                                    <th class="p-3 text-center">Por Mejorar (0 pts)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr>
+                                    <td class="p-3 font-semibold">1. Dominio de las frases (Do-Mi-Sol / Mi-Mi-Re)</td>
+                                    <td class="p-3 text-center"><input type="checkbox" class="w-4 h-4 text-montano-blue rounded"></td>
+                                    <td class="p-3 text-center"><input type="checkbox" class="w-4 h-4 text-montano-blue rounded"></td>
+                                    <td class="p-3 text-center"><input type="checkbox" class="w-4 h-4 text-montano-blue rounded"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold">2. Pulso y ritmo constante de Vals (3/4)</td>
+                                    <td class="p-3 text-center"><input type="checkbox" class="w-4 h-4 text-montano-blue rounded"></td>
+                                    <td class="p-3 text-center"><input type="checkbox" class="w-4 h-4 text-montano-blue rounded"></td>
+                                    <td class="p-3 text-center"><input type="checkbox" class="w-4 h-4 text-montano-blue rounded"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold">3. Trabajo colaborativo en Pareja (Sinergia)</td>
+                                    <td class="p-3 text-center"><input type="checkbox" class="w-4 h-4 text-montano-blue rounded"></td>
+                                    <td class="p-3 text-center"><input type="checkbox" class="w-4 h-4 text-montano-blue rounded"></td>
+                                    <td class="p-3 text-center"><input type="checkbox" class="w-4 h-4 text-montano-blue rounded"></td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold">4. Respeto al turno de presentación durante la Plenaria</td>
+                                    <td class="p-3 text-center"><input type="checkbox" class="w-4 h-4 text-montano-blue rounded"></td>
+                                    <td class="p-3 text-center"><input type="checkbox" class="w-4 h-4 text-montano-blue rounded"></td>
+                                    <td class="p-3 text-center"><input type="checkbox" class="w-4 h-4 text-montano-blue rounded"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center text-xs py-3 mt-auto">
+        <p>Colegio Montano • Modelo Formativo Institucional • Guía Docente para Pizarra Digital</p>
+    </footer>
+
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('block');
+            });
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('text-gray-600');
+            });
+
+            const selectedTab = document.getElementById(tabId);
+            const selectedBtn = document.getElementById('btn-' + tabId);
+
+            if (selectedTab && selectedBtn) {
+                selectedTab.classList.remove('hidden');
+                selectedTab.classList.add('block');
+                selectedBtn.classList.add('active');
+                selectedBtn.classList.remove('text-gray-600');
+            }
+        }
+
+        // Accordion Toggle Logic
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(id + '-icon');
+
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                content.classList.add('open');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+        }
+
+        // Fullscreen Toggle
+        function toggleFullscreen() {
+            const btnText = document.getElementById('fs-text');
+            const btnIcon = document.getElementById('fs-icon');
+
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => {
+                    btnText.innerText = 'Salir Pantalla Completa';
+                    btnIcon.classList.remove('fa-expand');
+                    btnIcon.classList.add('fa-compress');
+                }).catch(err => {
+                    console.log(`Error intentando activar pantalla completa: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    btnText.innerText = 'Pantalla Completa';
+                    btnIcon.classList.remove('fa-compress');
+                    btnIcon.classList.add('fa-expand');
+                }
+            }
+        }
+
+        // Interactive Audio Synthesizer (Tone feedback for simulator)
+        function playNoteSound(note) {
+            const feedback = document.getElementById('note-feedback');
+            feedback.innerText = `🎵 Reproduciendo nota: ${note} (Simulación de tono)`;
+
+            // Audio Context for direct sound feedback
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                const freqs = {
+                    'Do': 261.63,
+                    'Re': 293.66,
+                    'Mi': 329.63,
+                    'Sol': 392.00
+                };
+
+                osc.type = 'triangle';
+                osc.frequency.value = freqs[note] || 440;
+
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.8);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start();
+                osc.stop(ctx.currentTime + 0.8);
+            } catch (e) {
+                console.log('Audio Context no permitido sin interacción previa.');
+            }
+
+            setTimeout(() => {
+                feedback.innerText = '';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
